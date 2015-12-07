@@ -1,0 +1,37 @@
+# Pastery Vim plugin
+
+This is a Vim plugin for the [Pastery](https://www.pastery.net/) pastebin, the
+sweetest pastebin in the world.
+
+
+## Installation
+
+You can install plugins in various ways. There's one in [the
+documentation](http://vimdoc.sourceforge.net/htmldoc/usr_05.html#plugin), but
+[Vundle.vim](https://github.com/gmarik/Vundle.vim) is just fantastic, so use
+that.
+
+Keep in mind that `pastery.vim` requires a version of Vim built with Python
+support.
+
+
+## Usage
+
+`pastery.vim` provides two functions:
+
+```vim
+" Paste the currently-selected portion of the code.
+:PasteCode
+
+" Paste the entire file.
+:PasteFile
+```
+
+By default, `pastery.vim` binds a hotkey to paste the currently selected section
+to F2. Just select a few lines, press that and you'll get a paste URL back very
+soon.
+
+
+## License
+
+This plugin is released under a BSD license.
