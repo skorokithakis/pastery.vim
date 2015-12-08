@@ -14,6 +14,14 @@ that.
 Keep in mind that `pastery.vim` requires a version of Vim built with Python
 support.
 
+After you install the plugin, add your Pastery API key:
+
+```vim
+let g:pastery_apikey = "The API key you get from the account page."
+```
+
+You're ready to go! Open up Vim, select some code and press F2, you'll get
+a pastery URL back.
 
 ## Usage
 
