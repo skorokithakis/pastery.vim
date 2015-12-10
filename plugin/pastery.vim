@@ -41,7 +41,7 @@ def PasteryPaste(start=None, end=None):
                   headers={'User-Agent': 'Mozilla/5.0 (Vim) Pastery plugin'})
     response = urlopen(req)
     if response.code != 200:
-        print("Error while pasting.")
+        vim.command(':redraw | echo "Error while pasting."')
     else:
-        print("Paste URL: %s" % json.loads(response.read())["url"])
+        vim.command(':redraw | echo "Paste URL: %s"' % json.loads(response.read())["url"])
 EOF
