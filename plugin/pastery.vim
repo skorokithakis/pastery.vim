@@ -27,11 +27,11 @@ def PasteryPaste(start=None, end=None):
     if start is None:
         start = 1
     if end is None:
-        end = -1
+        end = len(vim.current.buffer)
 
     api_key = vim.eval("g:pastery_apikey")
 
-    data = '\n'.join(vim.current.buffer[int(start) - 1:int(end)])
+    data = "\n".join(vim.current.buffer.range(start, end))
 
     url = "https://www.pastery.net/api/paste/?language=%s" % vim.eval('&ft')
     if api_key:
