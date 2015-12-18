@@ -39,6 +39,17 @@ By default, `pastery.vim` binds a hotkey to paste the currently selected section
 to F2. Just select a few lines, press that and you'll get a paste URL back very
 soon.
 
+## Extended Usage
+
+Pastery can automatically open the just-created URL for you if you want:
+
+```vim
+let g:pastery_open_in_browser = 1
+```
+
+`g:pastery_open_in_browser` defaults to 0 (false).
+
+The latest URL is stored in a Vim variable `pastery_result_url`.
 
 ## License
 
