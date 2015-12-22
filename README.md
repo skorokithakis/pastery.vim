@@ -37,7 +37,8 @@ a pastery URL back.
 
 By default, `pastery.vim` binds a hotkey to paste the currently selected section
 to F2. Just select a few lines, press that and you'll get a paste URL back very
-soon.
+soon. The URL will be automatically copied to your clipboard and displayed in
+your vim console.
 
 ## Extended Usage
 

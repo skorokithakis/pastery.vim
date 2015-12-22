@@ -61,6 +61,7 @@ def PasteryPaste(start=None, end=None):
     else:
         pastery_result_url = json.loads(response.read())["url"]
         vim.command(':let pastery_result_url = "{}"'.format(pastery_result_url))
+        vim.command(':let @+ = pastery_result_url')
         vim.command(':redraw | echo "Paste URL: {}"'.format(pastery_result_url))
         if open_in_browser:
             webbrowser.open(pastery_result_url)
