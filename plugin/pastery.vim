@@ -16,9 +16,9 @@ if !exists("g:pastery_open_in_browser")
 endif
 
 " Paste a range.
-:command -range             PasteCode :py PasteryPaste(<line1>,<line2>)
+:command! -range             PasteCode :py PasteryPaste(<line1>,<line2>)
 " Paste a whole file.
-:command                    PasteFile :py PasteryPaste()
+:command!                    PasteFile :py PasteryPaste()
 
 :vnoremap <f2> :PasteCode<cr>
 
