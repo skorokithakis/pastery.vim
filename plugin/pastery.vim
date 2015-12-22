@@ -3,9 +3,16 @@ if !has("python")
     finish
 endif
 
+let pastery_result_url = ""
+
 " Set default API key.
 if !exists("g:pastery_apikey")
   let g:pastery_apikey = ""
+endif
+
+" Set default auto-open behavior
+if !exists("g:pastery_open_in_browser")
+  let g:pastery_open_in_browser = 0
 endif
 
 " Paste a range.
@@ -18,10 +25,18 @@ endif
 python << EOF
 import vim
 import json
+import webbrowser
+
 try:
     from urllib.request import urlopen, Request, build_opener
 except ImportError:
     from urllib2 import urlopen, Request, build_opener
+
+def to_bool(s):
+  try:
+    return bool(int(s))
+  except ValueError:
+    return bool(x.strip())
 
 def PasteryPaste(start=None, end=None):
     if start is None:
@@ -30,6 +45,7 @@ def PasteryPaste(start=None, end=None):
         end = len(vim.current.buffer)
 
     api_key = vim.eval("g:pastery_apikey")
+    open_in_browser = to_bool(vim.eval("g:pastery_open_in_browser"))
 
     data = "\n".join(vim.current.buffer.range(start, end))
 
@@ -43,5 +59,9 @@ def PasteryPaste(start=None, end=None):
     if response.code != 200:
         vim.command(':redraw | echo "Error while pasting."')
     else:
-        vim.command(':redraw | echo "Paste URL: %s"' % json.loads(response.read())["url"])
+        pastery_result_url = json.loads(response.read())["url"]
+        vim.command(':let pastery_result_url = "{}"'.format(pastery_result_url))
+        vim.command(':redraw | echo "Paste URL: {}"'.format(pastery_result_url))
+        if open_in_browser:
+            webbrowser.open(pastery_result_url)
 EOF
