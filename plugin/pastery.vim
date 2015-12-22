@@ -16,7 +16,9 @@ if !exists("g:pastery_open_in_browser")
 endif
 
 " Set default copy-to-clipboard behavior.
-if !exists("g:pastery_copy_to_clipboard")
+if !has('clipboard')
+  let g:pastery_copy_to_clipboard = 0
+elseif !exists("g:pastery_copy_to_clipboard")
   let g:pastery_copy_to_clipboard = 1
 endif
 
