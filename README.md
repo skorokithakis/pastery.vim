@@ -37,8 +37,8 @@ a pastery URL back.
 
 By default, `pastery.vim` binds a hotkey to paste the currently selected section
 to F2. Just select a few lines, press that and you'll get a paste URL back very
-soon. The URL will be automatically copied to your clipboard and displayed in
-your vim console.
+soon. The URL will be automatically copied to your clipboard (if your vim has
+clipboard support) and displayed in your vim console.
 
 ## Extended Usage
 
@@ -52,6 +52,15 @@ let g:pastery_open_in_browser = 1
 
 The latest URL is stored in a Vim variable `pastery_result_url`.
 
+If you don't want to automatically copy the URL to the system clipboard, you
+can turn the behavior off:
+
+```vim
+let g:pastery_copy_to_clipboard = 0
+```
+
+`g:pastery_copy_to_clipboard` defaults to 1 (true).
+
 ## License
 
-This plugin is released under a BSD license.
+This plugin is released under the BSD three-clause license.

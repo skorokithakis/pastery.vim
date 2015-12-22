@@ -10,9 +10,14 @@ if !exists("g:pastery_apikey")
   let g:pastery_apikey = ""
 endif
 
-" Set default auto-open behavior
+" Set default auto-open behavior.
 if !exists("g:pastery_open_in_browser")
   let g:pastery_open_in_browser = 0
+endif
+
+" Set default copy-to-clipboard behavior.
+if !exists("g:pastery_copy_to_clipboard")
+  let g:pastery_copy_to_clipboard = 1
 endif
 
 " Paste a range.
@@ -46,6 +51,7 @@ def PasteryPaste(start=None, end=None):
 
     api_key = vim.eval("g:pastery_apikey")
     open_in_browser = to_bool(vim.eval("g:pastery_open_in_browser"))
+    copy_to_clipboard = to_bool(vim.eval("g:pastery_copy_to_clipboard"))
 
     data = "\n".join(vim.current.buffer.range(start, end))
 
@@ -61,7 +67,8 @@ def PasteryPaste(start=None, end=None):
     else:
         pastery_result_url = json.loads(response.read())["url"]
         vim.command(':let pastery_result_url = "{}"'.format(pastery_result_url))
-        vim.command(':let @+ = pastery_result_url')
+        if copy_to_clipboard:
+            vim.command(':let @+ = pastery_result_url')
         vim.command(':redraw | echo "Paste URL: {}"'.format(pastery_result_url))
         if open_in_browser:
             webbrowser.open(pastery_result_url)
