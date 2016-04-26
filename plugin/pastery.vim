@@ -68,7 +68,7 @@ def PasteryPaste(start=None, end=None):
     url = "https://www.pastery.net/api/paste/?language=%s" % vim.eval('&ft')
     if api_key:
         url = url + "&api_key=" + api_key
-    req = Request(url, data=bytes(data, "utf8"), headers={'User-Agent': 'Mozilla/5.0 (Vim) Pastery plugin'})
+    req = Request(url, data=data.encode("utf8"), headers={'User-Agent': 'Mozilla/5.0 (Vim) Pastery plugin'})
     response = urlopen(req)
     if response.code != 200:
         vim.command(':redraw | echo "Error while pasting."')
