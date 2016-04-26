@@ -28,14 +28,16 @@ if has("python3")
     :command! -range             PasteCode :py3 PasteryPaste(<line1>,<line2>)
     " Paste a whole file.
     :command!                    PasteFile :py3 PasteryPaste()
+    let pyver = "python3"
 else
     :command! -range             PasteCode :py PasteryPaste(<line1>,<line2>)
     :command!                    PasteFile :py PasteryPaste()
+    let pyver = "python"
 endif
 
 :vnoremap <f2> :PasteCode<cr>
 
-python << EOF
+exec pyver . "<< EOF"
 import vim
 import json
 import webbrowser
@@ -66,12 +68,12 @@ def PasteryPaste(start=None, end=None):
     url = "https://www.pastery.net/api/paste/?language=%s" % vim.eval('&ft')
     if api_key:
         url = url + "&api_key=" + api_key
-    req = Request(url, data=bytes(data), headers={'User-Agent': 'Mozilla/5.0 (Vim) Pastery plugin'})
+    req = Request(url, data=bytes(data, "utf8"), headers={'User-Agent': 'Mozilla/5.0 (Vim) Pastery plugin'})
     response = urlopen(req)
     if response.code != 200:
         vim.command(':redraw | echo "Error while pasting."')
     else:
-        pastery_result_url = json.loads(response.read())["url"]
+        pastery_result_url = json.loads(response.read().decode("utf8"))["url"]
         vim.command(':let pastery_result_url = "{}"'.format(pastery_result_url))
         if copy_to_clipboard:
             vim.command(':let @+ = pastery_result_url')
