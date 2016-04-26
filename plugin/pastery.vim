@@ -1,5 +1,5 @@
 " Return if there's no Python support.
-if !has("python")
+if !has("python") && !has("python3")
     :echom "Vim was not compiled with Python support. Pastery cannot run."
     finish
 endif
@@ -23,10 +23,15 @@ elseif !exists("g:pastery_copy_to_clipboard")
   let g:pastery_copy_to_clipboard = 1
 endif
 
-" Paste a range.
-:command! -range             PasteCode :py PasteryPaste(<line1>,<line2>)
-" Paste a whole file.
-:command!                    PasteFile :py PasteryPaste()
+if has("python3")
+    " Paste a range.
+    :command! -range             PasteCode :py3 PasteryPaste(<line1>,<line2>)
+    " Paste a whole file.
+    :command!                    PasteFile :py3 PasteryPaste()
+else
+    :command! -range             PasteCode :py PasteryPaste(<line1>,<line2>)
+    :command!                    PasteFile :py PasteryPaste()
+endif
 
 :vnoremap <f2> :PasteCode<cr>
 
@@ -61,9 +66,7 @@ def PasteryPaste(start=None, end=None):
     url = "https://www.pastery.net/api/paste/?language=%s" % vim.eval('&ft')
     if api_key:
         url = url + "&api_key=" + api_key
-    req = Request(url,
-                  data=bytes(data),
-                  headers={'User-Agent': 'Mozilla/5.0 (Vim) Pastery plugin'})
+    req = Request(url, data=bytes(data), headers={'User-Agent': 'Mozilla/5.0 (Vim) Pastery plugin'})
     response = urlopen(req)
     if response.code != 200:
         vim.command(':redraw | echo "Error while pasting."')
