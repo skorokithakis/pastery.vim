@@ -1,5 +1,6 @@
 " Return if there's no Python support.
 if !has("python")
+    :echom "Vim was not compiled with Python support. Pastery cannot run."
     finish
 endif
 
