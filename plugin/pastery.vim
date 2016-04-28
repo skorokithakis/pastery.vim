@@ -27,11 +27,11 @@ if has("python3")
     " Paste a range.
     :command! -range             PasteCode :py3 PasteryPaste(<line1>,<line2>)
     " Paste a whole file.
-    :command!                    PasteFile :py3 PasteryPaste()
+    :command!                    PasteFile :py3 PasteryPaste(title=vim.eval("expand('%:t')"))
     let pyver = "python3"
 else
     :command! -range             PasteCode :py PasteryPaste(<line1>,<line2>)
-    :command!                    PasteFile :py PasteryPaste()
+    :command!                    PasteFile :py PasteryPaste(title=vim.eval("expand('%:t')"))
     let pyver = "python"
 endif
 
@@ -44,8 +44,10 @@ import webbrowser
 
 try:
     from urllib.request import urlopen, Request, build_opener
+    from urllib.parse import quote_plus
 except ImportError:
     from urllib2 import urlopen, Request, build_opener
+    from urllib import quote_plus
 
 def to_bool(s):
   try:
@@ -53,7 +55,7 @@ def to_bool(s):
   except ValueError:
     return bool(x.strip())
 
-def PasteryPaste(start=None, end=None):
+def PasteryPaste(start=None, end=None, title=""):
     if start is None:
         start = 1
     if end is None:
@@ -65,9 +67,11 @@ def PasteryPaste(start=None, end=None):
 
     data = "\n".join(vim.current.buffer.range(start, end))
 
-    url = "https://www.pastery.net/api/paste/?language=%s" % vim.eval('&ft')
+    url = "https://www.pastery.net/api/paste/?language=%s&title=%s" % (vim.eval('&ft'), quote_plus(title))
+
     if api_key:
         url = url + "&api_key=" + api_key
+
     req = Request(url, data=data.encode("utf8"), headers={'User-Agent': 'Mozilla/5.0 (Vim) Pastery plugin'})
     response = urlopen(req)
     if response.code != 200:
