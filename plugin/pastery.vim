@@ -38,17 +38,6 @@ endif
 :vnoremap <f2> :PasteCode<cr>
 
 exec pyver . "<< EOF"
-import vim
-import json
-import webbrowser
-
-try:
-    from urllib.request import urlopen, Request, build_opener
-    from urllib.parse import quote_plus
-except ImportError:
-    from urllib2 import urlopen, Request, build_opener
-    from urllib import quote_plus
-
 def to_bool(s):
   try:
     return bool(int(s))
@@ -56,6 +45,17 @@ def to_bool(s):
     return bool(x.strip())
 
 def PasteryPaste(start=None, end=None, title=""):
+    import vim
+    import json
+    import webbrowser
+
+    try:
+        from urllib.request import urlopen, Request, build_opener
+        from urllib.parse import quote_plus
+    except ImportError:
+        from urllib2 import urlopen, Request, build_opener
+        from urllib import quote_plus
+
     if start is None:
         start = 1
     if end is None:
